@@ -32,8 +32,7 @@ class SubscriptionHandler extends AbstractHandler
             $card,
             $customer,
             $postbackUrl,
-            $metadata,
-            $extraData
+            $metadata
         );
 
         $result = $this->client->send($request);
@@ -58,8 +57,7 @@ class SubscriptionHandler extends AbstractHandler
             $plan,
             $customer,
             $postbackUrl,
-            $metadata,
-            $extraData = []
+            $metadata
         );
 
         $result = $this->client->send($request);
