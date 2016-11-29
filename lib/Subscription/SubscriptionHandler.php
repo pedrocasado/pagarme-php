@@ -8,6 +8,7 @@ use PagarMe\Sdk\Customer\Customer;
 use PagarMe\Sdk\Plan\Plan;
 use PagarMe\Sdk\Subscription\Request\CardSubscriptionCreate;
 use PagarMe\Sdk\Subscription\Request\BoletoSubscriptionCreate;
+use PagarMe\Sdk\Subscription\Request\SubscriptionGet;
 
 class SubscriptionHandler extends AbstractHandler
 {
@@ -60,6 +61,18 @@ class SubscriptionHandler extends AbstractHandler
             $metadata,
             $extraData = []
         );
+
+        $result = $this->client->send($request);
+
+        return new Subscription(get_object_vars($result));
+    }
+
+    /**
+     * @param int $subscriptionId
+    **/
+    public function get($subscriptionId)
+    {
+        $request = new SubscriptionGet($subscriptionId);
 
         $result = $this->client->send($request);
 

@@ -102,4 +102,32 @@ class SubscriptionContext extends BasicContext
     {
         assertEquals($paymentMethod, $this->subscription->getPaymentMethod());
     }
+
+    /**
+     * @Given a previous created subscription
+     */
+    public function aPreviousCreatedSubscription()
+    {
+        $this->aValidCustomer();
+        $this->aValidPlan();
+        $this->makeABoletoSubscription();
+    }
+
+    /**
+     * @When I query for the subscription
+     */
+    public function iQueryForTheSubscription()
+    {
+        $this->querySubscription = self::getPagarMe()
+            ->subscription()
+            ->get($this->subscription->getId());
+    }
+
+    /**
+     * @Then the same subscription must be returned
+     */
+    public function theSameSubscriptionMustBeReturned()
+    {
+        assertEquals($this->subscription, $this->querySubscription);
+    }
 }
