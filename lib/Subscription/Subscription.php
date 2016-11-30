@@ -3,6 +3,8 @@
 namespace PagarMe\Sdk\Subscription;
 
 use PagarMe\Sdk\Transaction\Transaction;
+use PagarMe\Sdk\Card\Card;
+use PagarMe\Sdk\Plan\Plan;
 
 class Subscription
 {
@@ -17,6 +19,11 @@ class Subscription
      * @var Card $card
      **/
     private $card;
+
+    /**
+     * @var Plan $plan
+     **/
+    private $plan;
 
     /**
      * @var Customer $customer
@@ -94,6 +101,32 @@ class Subscription
     }
 
     /**
+     * @param Card
+     **/
+    public function setCard(Card $card)
+    {
+        $this->card = $card;
+        return $this;
+    }
+
+    /**
+     * @return Plan
+     **/
+    public function getPlan()
+    {
+        return $this->plan;
+    }
+
+    /**
+     * @param Plan
+     **/
+    public function setPlan(Plan $plan)
+    {
+        $this->plan = $plan;
+        return $this;
+    }
+
+    /**
      * @return Customer
      **/
     public function getCustomer()
@@ -131,6 +164,15 @@ class Subscription
     public function getPaymentMethod()
     {
         return $this->paymentMethod;
+    }
+
+    /**
+     * @param string
+     **/
+    public function setPaymentMethod($paymentMethod)
+    {
+        $this->paymentMethod = $paymentMethod;
+        return $this;
     }
 
     /**

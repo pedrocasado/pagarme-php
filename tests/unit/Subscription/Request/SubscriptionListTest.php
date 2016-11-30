@@ -34,7 +34,7 @@ class SubscriptionListTest extends \PHPUnit_Framework_TestCase
             $subscriptionListRequest->getPayload(),
             [
                 'page' => $page,
-                'count' => $count,
+                'count' => $count
             ]
         );
 
