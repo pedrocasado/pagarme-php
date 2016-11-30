@@ -19,6 +19,9 @@ class SubscriptionContext extends BasicContext
     private $customer;
     private $plan;
     private $creditCard;
+    private $subscription;
+    private $subscriptions;
+    private $querySubscription;
 
     /**
      * @Given a valid customer
@@ -129,5 +132,38 @@ class SubscriptionContext extends BasicContext
     public function theSameSubscriptionMustBeReturned()
     {
         assertEquals($this->subscription, $this->querySubscription);
+    }
+
+    /**
+     * @Given a previous created subscriptions
+     */
+    public function aPreviousCreatedSubscriptions()
+    {
+        $this->aPreviousCreatedSubscription();
+        $this->aPreviousCreatedSubscription();
+        $this->aPreviousCreatedSubscription();
+        sleep(1);
+    }
+
+    /**
+     * @When I query for subscriptions
+     */
+    public function iQueryForSubscriptions()
+    {
+        $this->subscriptions = self::getPagarMe()
+            ->subscription()
+            ->getList();
+    }
+
+    /**
+     * @Then subscriptions must be returned
+     */
+    public function subscriptionsMustBeReturned()
+    {
+        assertGreaterThanOrEqual(3, count($this->subscriptions));
+        assertContainsOnly(
+            'PagarMe\Sdk\Subscription\Subscription',
+            $this->subscriptions
+        );
     }
 }

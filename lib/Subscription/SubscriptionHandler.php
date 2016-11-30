@@ -9,6 +9,7 @@ use PagarMe\Sdk\Plan\Plan;
 use PagarMe\Sdk\Subscription\Request\CardSubscriptionCreate;
 use PagarMe\Sdk\Subscription\Request\BoletoSubscriptionCreate;
 use PagarMe\Sdk\Subscription\Request\SubscriptionGet;
+use PagarMe\Sdk\Subscription\Request\SubscriptionList;
 
 class SubscriptionHandler extends AbstractHandler
 {
@@ -75,5 +76,23 @@ class SubscriptionHandler extends AbstractHandler
         $result = $this->client->send($request);
 
         return new Subscription(get_object_vars($result));
+    }
+
+    /**
+     * @param int $page
+     * @param int $count
+    **/
+    public function getList($page = null, $count = null)
+    {
+        $request = new SubscriptionList($page, $count);
+
+        $result = $this->client->send($request);
+
+        $subscriptions = [];
+        foreach ($result as $subscription) {
+            $subscriptions[] = new Subscription(get_object_vars($subscription));
+        }
+
+        return $subscriptions;
     }
 }

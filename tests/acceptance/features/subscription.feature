@@ -22,3 +22,8 @@ Feature: Subscription
     Given a previous created subscription
     When I query for the subscription
     Then the same subscription must be returned
+
+ Scenario: List subscriptions
+    Given a previous created subscriptions
+    When I query for subscriptions
+    Then subscriptions must be returned
