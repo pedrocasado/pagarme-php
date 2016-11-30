@@ -10,6 +10,7 @@ use PagarMe\Sdk\Subscription\Request\CardSubscriptionCreate;
 use PagarMe\Sdk\Subscription\Request\BoletoSubscriptionCreate;
 use PagarMe\Sdk\Subscription\Request\SubscriptionGet;
 use PagarMe\Sdk\Subscription\Request\SubscriptionList;
+use PagarMe\Sdk\Subscription\Request\SubscriptionCancel;
 
 class SubscriptionHandler extends AbstractHandler
 {
@@ -94,5 +95,17 @@ class SubscriptionHandler extends AbstractHandler
         }
 
         return $subscriptions;
+    }
+
+    /**
+     * @param int $subscriptionId
+    **/
+    public function cancel($subscriptionId)
+    {
+        $request = new SubscriptionCancel($subscriptionId);
+
+        $result = $this->client->send($request);
+
+        return new Subscription(get_object_vars($result));
     }
 }

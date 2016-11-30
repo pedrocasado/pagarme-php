@@ -135,9 +135,9 @@ class SubscriptionContext extends BasicContext
     }
 
     /**
-     * @Given a previous created subscriptions
+     * @Given previous created subscriptions
      */
-    public function aPreviousCreatedSubscriptions()
+    public function previousCreatedSubscriptions()
     {
         $this->aPreviousCreatedSubscription();
         $this->aPreviousCreatedSubscription();
@@ -165,5 +165,23 @@ class SubscriptionContext extends BasicContext
             'PagarMe\Sdk\Subscription\Subscription',
             $this->subscriptions
         );
+    }
+
+    /**
+     * @When I cancel the subscription
+     */
+    public function iCancelTheSubscription()
+    {
+        $this->subscription = self::getPagarMe()
+            ->subscription()
+            ->cancel($this->subscription->getId());
+    }
+
+    /**
+     * @Then subscription status must be :status
+     */
+    public function subscriptionStatusMustBe($status)
+    {
+        assertEquals($status, $this->subscription->getStatus());
     }
 }

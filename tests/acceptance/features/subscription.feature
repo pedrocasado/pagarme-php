@@ -24,6 +24,11 @@ Feature: Subscription
     Then the same subscription must be returned
 
  Scenario: List subscriptions
-    Given a previous created subscriptions
+    Given previous created subscriptions
     When I query for subscriptions
     Then subscriptions must be returned
+@only
+ Scenario: Cancel subscription
+    Given a previous created subscription
+    When I cancel the subscription
+    Then subscription status must be 'canceled'
