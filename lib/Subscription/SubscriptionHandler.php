@@ -6,12 +6,16 @@ use PagarMe\Sdk\AbstractHandler;
 use PagarMe\Sdk\Card\Card;
 use PagarMe\Sdk\Customer\Customer;
 use PagarMe\Sdk\Plan\Plan;
+use PagarMe\Sdk\Transaction\BoletoTransaction;
+use PagarMe\Sdk\Transaction\CreditCardTransaction;
+use PagarMe\Sdk\Transaction\UnsupportedTransaction;
 use PagarMe\Sdk\Subscription\Request\CardSubscriptionCreate;
 use PagarMe\Sdk\Subscription\Request\BoletoSubscriptionCreate;
 use PagarMe\Sdk\Subscription\Request\SubscriptionGet;
 use PagarMe\Sdk\Subscription\Request\SubscriptionList;
 use PagarMe\Sdk\Subscription\Request\SubscriptionCancel;
 use PagarMe\Sdk\Subscription\Request\SubscriptionUpdate;
+use PagarMe\Sdk\Subscription\Request\SubscriptionTransactionsGet;
 
 class SubscriptionHandler extends AbstractHandler
 {
@@ -120,5 +124,47 @@ class SubscriptionHandler extends AbstractHandler
         $result = $this->client->send($request);
 
         return new Subscription(get_object_vars($result));
+    }
+
+    /**
+     * @param Subscription $subscription
+    **/
+    public function transactions(Subscription $subscription)
+    {
+        $request = new SubscriptionTransactionsGet($subscription);
+
+        $result = $this->client->send($request);
+
+        $transactions = [];
+        foreach ($result as $transaction) {
+            $transactions[] = $this->buildTransaction($transaction);
+        }
+
+        return $transactions;
+    }
+
+    private function buildTransaction($transactionData)
+    {
+        if (isset($transactionData->split_rules)) {
+            $transactionData->split_rules = $this->buildSplitRules(
+                $transactionData->split_rules
+            );
+        }
+
+        if ($transactionData->payment_method == BoletoTransaction::PAYMENT_METHOD) {
+            return new BoletoTransaction(get_object_vars($transactionData));
+        }
+
+        if ($transactionData->payment_method == CreditCardTransaction::PAYMENT_METHOD) {
+            return new CreditCardTransaction(get_object_vars($transactionData));
+        }
+
+        throw new UnsupportedTransaction(
+            sprintf(
+                'Transaction type: %s, is not supported',
+                $transactionData->payment_method
+            ),
+            1
+        );
     }
 }

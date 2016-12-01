@@ -27,8 +27,13 @@ Feature: Subscription
     Given previous created subscriptions
     When I query for subscriptions
     Then subscriptions must be returned
-@only
+
  Scenario: Cancel subscription
     Given a previous created subscription
     When I cancel the subscription
     Then subscription status must be 'canceled'
+
+ Scenario: List subscription transacitons
+    Given a previous created subscription
+    When I query the transactions of this subscription
+    Then transactions must be returned

@@ -22,6 +22,7 @@ class SubscriptionContext extends BasicContext
     private $subscription;
     private $subscriptions;
     private $querySubscription;
+    private $transactions;
 
     /**
      * @Given a valid customer
@@ -183,5 +184,28 @@ class SubscriptionContext extends BasicContext
     public function subscriptionStatusMustBe($status)
     {
         assertEquals($status, $this->subscription->getStatus());
+    }
+
+    /**
+     * @When I query the transactions of this subscription
+     */
+    public function iQueryTheTransactionsOfThisSubscription()
+    {
+        sleep(1);
+        $this->transactions = self::getPagarMe()
+            ->subscription()
+            ->transactions($this->subscription);
+    }
+
+    /**
+     * @Then transactions must be returned
+     */
+    public function transactionsMustBeReturned()
+    {
+        assertGreaterThanOrEqual(1, count($this->transactions));
+        assertContainsOnly(
+            'PagarMe\Sdk\Transaction\AbstractTransaction',
+            $this->transactions
+        );
     }
 }
