@@ -20,6 +20,8 @@ use PagarMe\Sdk\Subscription\Request\SubscriptionTransactionsGet;
 class SubscriptionHandler extends AbstractHandler
 {
     use \PagarMe\Sdk\Transaction\TransactionBuilder;
+    use \PagarMe\Sdk\Customer\PhoneBuilder;
+    use \PagarMe\Sdk\Customer\AddressBuilder;
 
     /**
     * @param int $id
@@ -46,7 +48,7 @@ class SubscriptionHandler extends AbstractHandler
 
         $result = $this->client->send($request);
 
-        return new Subscription(get_object_vars($result));
+        return $this->buildSubscription($result);
     }
 
     /**
@@ -71,7 +73,7 @@ class SubscriptionHandler extends AbstractHandler
 
         $result = $this->client->send($request);
 
-        return new Subscription(get_object_vars($result));
+        return $this->buildSubscription($result);
     }
 
     /**
@@ -83,7 +85,7 @@ class SubscriptionHandler extends AbstractHandler
 
         $result = $this->client->send($request);
 
-        return new Subscription(get_object_vars($result));
+        return $this->buildSubscription($result);
     }
 
     /**
@@ -98,7 +100,7 @@ class SubscriptionHandler extends AbstractHandler
 
         $subscriptions = [];
         foreach ($result as $subscription) {
-            $subscriptions[] = new Subscription(get_object_vars($subscription));
+            $subscriptions[] = $this->buildSubscription($subscription);
         }
 
         return $subscriptions;
@@ -113,7 +115,7 @@ class SubscriptionHandler extends AbstractHandler
 
         $result = $this->client->send($request);
 
-        return new Subscription(get_object_vars($result));
+        return $this->buildSubscription($result);
     }
 
     /**
@@ -125,7 +127,7 @@ class SubscriptionHandler extends AbstractHandler
 
         $result = $this->client->send($request);
 
-        return new Subscription(get_object_vars($result));
+        return $this->buildSubscription($result);
     }
 
     /**
@@ -143,5 +145,28 @@ class SubscriptionHandler extends AbstractHandler
         }
 
         return $transactions;
+    }
+
+    private function buildSubscription($subscriptionData)
+    {
+        if (is_object($subscriptionData->card)) {
+            $subscriptionData->card = new Card(
+                get_object_vars($subscriptionData->card)
+            );
+        }
+
+        $subscriptionData->plan = new Plan(
+            get_object_vars($subscriptionData->plan)
+        );
+
+        $subscriptionData->customer = new Customer(
+            get_object_vars($subscriptionData->customer)
+        );
+
+        $subscriptionData->current_transaction = $this->buildTransaction(
+            $subscriptionData->current_transaction
+        );
+
+        return new Subscription(get_object_vars($subscriptionData));
     }
 }
