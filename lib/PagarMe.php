@@ -10,6 +10,7 @@ use PagarMe\Sdk\Calculation\CalculationHandler;
 use PagarMe\Sdk\Recipient\RecipientHandler;
 use PagarMe\Sdk\Plan\PlanHandler;
 use PagarMe\Sdk\SplitRule\SplitRuleHandler;
+use PagarMe\Sdk\BankAccount\BankAccountHandler;
 
 class PagarMe
 {
@@ -52,6 +53,11 @@ class PagarMe
      * @param SplitRuleHandler | Manipulador de splitRule
      */
     private $splitRuleHandler;
+
+    /**
+     * @param BankAccount | Manipulador de contas bancarias
+     */
+    private $bankAccountHandler;
 
     /**
      * @param $apiKey
@@ -150,5 +156,17 @@ class PagarMe
         }
 
         return $this->splitRuleHandler;
+    }
+
+    /**
+     * @return BankAccountHandler
+     */
+    public function bankAccount()
+    {
+        if (!$this->bankAccountHandler instanceof BankAccountHandler) {
+            $this->bankAccountHandler = new BankAccountHandler($this->client);
+        }
+
+        return $this->bankAccountHandler;
     }
 }

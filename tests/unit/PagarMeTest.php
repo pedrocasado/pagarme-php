@@ -131,4 +131,21 @@ class PagarMeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($splitRuleHandlerA, $splitRuleHandlerB);
     }
+
+    /**
+     * @test
+    **/
+    public function mustReturnSameBankAccountHandler()
+    {
+        $pagarMe = new PagarMe('apiKey');
+
+        $bankAccountHandlerA = $pagarMe->bankAccount();
+        $bankAccountHandlerB = $pagarMe->bankAccount();
+
+        $this->assertSame($bankAccountHandlerA, $bankAccountHandlerB);
+        $this->assertInstanceOf(
+            'PagarMe\Sdk\BankAccount\BankAccountHandler',
+            $bankAccountHandlerA
+        );
+    }
 }
