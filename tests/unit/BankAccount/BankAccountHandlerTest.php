@@ -23,7 +23,7 @@ class BankAccountTest extends \PHPUnit_Framework_TestCase
             'Pagarme\Sdk\BankAccount\BankAccount',
             $handler->create(
                 341,
-                0932,
+                932,
                 58054,
                 1,
                 'API BANK ACCOUNT',
