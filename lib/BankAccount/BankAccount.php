@@ -42,10 +42,19 @@ class BankAccount
     private $documentNumber;
 
     /**
+     * @var string | Tipo do documento do titular da conta
+     */
+    private $documentType;
+
+    /**
      * @var string | Nome completo (se pessoa física) ou Razão Social (se pessoa jurídica)
      */
     private $legalName;
 
+    /**
+     * @var string | Data de criação da conta bancária (ISODate)
+     */
+    private $dateCreated;
 
     /**
      * @param array $arrayData
@@ -114,8 +123,24 @@ class BankAccount
     /**
      * @return string
      */
+    public function getDocumentType()
+    {
+        return $this->documentType;
+    }
+
+    /**
+     * @return string
+     */
     public function getLegalName()
     {
         return $this->legalName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
     }
 }
