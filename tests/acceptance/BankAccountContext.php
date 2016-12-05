@@ -20,6 +20,7 @@ class BankAccountContext extends BasicContext
     private $officeDigit;
 
     private $bankAccount;
+    private $bankAccounts;
 
     /**
      * @Given following account data :bankCode, :office, :accountNumber, :accountDigit, :document, :name and :officeDigit
@@ -87,5 +88,96 @@ class BankAccountContext extends BasicContext
         assertEquals($this->document, $this->bankAccount->getDocumentNumber());
         assertEquals($this->name, $this->bankAccount->getLegalName());
         assertEquals($this->officeDigit, $this->bankAccount->getAgenciaDv());
+    }
+
+    /**
+     * @Given a previous created bank accounts
+     */
+    public function aPreviousCreatedBankAccounts()
+    {
+        $samples = [
+            [
+                'bankCode'      => 001,
+                'office'        => 1977,
+                'accountNumber' => 1935,
+                'accountDigit'  => 1,
+                'document'      => 67178880244,
+                'name'          => 'Maria Silva',
+                'officeDigit'   => 1
+            ],
+            [
+                'bankCode'      => 033,
+                'office'        => 1986,
+                'accountNumber' => 01020,
+                'accountDigit'  => 2,
+                'document'      => 75232346660,
+                'name'          => 'Carlos Silva',
+                'officeDigit'   => null
+            ],
+            [
+                'bankCode'      => 104,
+                'office'        => 1991,
+                'accountNumber' => 10001,
+                'accountDigit'  => 3,
+                'document'      => 13067245890,
+                'name'          => 'Cesar Silva',
+                'officeDigit'   => 3
+            ],
+            [
+                'bankCode'      => 237,
+                'office'        => 2006,
+                'accountNumber' => 80486,
+                'accountDigit'  => 4,
+                'document'      => 26260865686,
+                'name'          => 'Luiza Silva',
+                'officeDigit'   => null
+            ],
+            [
+                'bankCode'      => 341,
+                'office'        => 2007,
+                'accountNumber' => 23350,
+                'accountDigit'  => 5,
+                'document'      => 11663782687,
+                'name'          => 'Joao Silva',
+                'officeDigit'   => null
+            ]
+        ];
+
+        foreach ($samples as $sample) {
+            self::getPagarMe()
+                ->bankAccount()
+                ->create(
+                    $sample['bankCode'],
+                    $sample['office'],
+                    $sample['accountNumber'],
+                    $sample['accountDigit'],
+                    $sample['document'],
+                    $sample['name'],
+                    $sample['officeDigit']
+                );
+        }
+        sleep(1);
+    }
+
+    /**
+     * @When I query for bank accounts
+     */
+    public function iQueryForBankAccounts()
+    {
+        $this->bankAccounts = self::getPagarMe()
+                ->bankAccount()
+                ->getList();
+    }
+
+    /**
+     * @Then a list of bank account must be returned
+     */
+    public function aListOfBankAccountMustBeReturned()
+    {
+        assertGreaterThanOrEqual(5, count($this->bankAccounts));
+        assertContainsOnly(
+            'PagarMe\Sdk\BankAccount\BankAccount',
+            $this->bankAccounts
+        );
     }
 }

@@ -15,3 +15,8 @@ Feature: Bank Account
     | 104       | 1991      | 10001         | 3         | 13067245890 | Cesar Silva     | 3         |
     | 237       | 2006      | 80486         | 4         | 26260865686 | Luiza Silva     | null      |
     | 341       | 2007      | 233500        | 5         | 11663782687 | Joao Silva      | null      |
+
+  Scenario: Listing bank accounts
+    Given a previous created bank accounts
+    When I query for bank accounts
+    Then a list of bank account must be returned

@@ -15,7 +15,7 @@ class BankAccountTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $clientMock->method('send')
-            ->willReturn(json_decode('{"object": "bank_account", "id": 4840, "bank_code": "341", "agencia": "0932", "agencia_dv": "5", "conta": "58054", "conta_dv": "1", "document_type": "cpf", "document_number": "26268738888", "legal_name": "API BANK ACCOUNT", "charge_transfer_fees": false, "date_created": "2015-03-19T15:35:40.000Z"}'));
+            ->willReturn(json_decode($this->getBankAccountResponse()));
 
         $handler = new BankAccountHandler($clientMock);
 
@@ -30,6 +30,43 @@ class BankAccountTest extends \PHPUnit_Framework_TestCase
                 26268738888,
                 5
             )
+        );
+    }
+
+    /**
+     * @test
+    **/
+    public function mustReturnBankAccountArray()
+    {
+        $clientMock =  $this->getMockBuilder('PagarMe\Sdk\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientMock->method('send')
+            ->willReturn(json_decode($this->getBankAccountListResponse()));
+
+        $handler = new BankAccountHandler($clientMock);
+
+        $bankAccounts = $handler->getList();
+
+        $this->assertContainsOnly(
+            'Pagarme\Sdk\BankAccount\BankAccount',
+            $bankAccounts
+        );
+        $this->assertEquals(3, count($bankAccounts));
+    }
+
+    private function getBankAccountResponse()
+    {
+        return '{"object": "bank_account", "id": 4840, "bank_code": "341", "agencia": "0932", "agencia_dv": "5", "conta": "58054", "conta_dv": "1", "document_type": "cpf", "document_number": "26268738888", "legal_name": "API BANK ACCOUNT", "charge_transfer_fees": false, "date_created": "2015-03-19T15:35:40.000Z"}';
+    }
+
+    private function getBankAccountListResponse()
+    {
+        return sprintf(
+            '[%s, %s, %s]',
+            $this->getBankAccountResponse(),
+            $this->getBankAccountResponse(),
+            $this->getBankAccountResponse()
         );
     }
 }
