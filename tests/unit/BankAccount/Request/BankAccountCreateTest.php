@@ -33,7 +33,7 @@ class BankAccountCreateTest extends \PHPUnit_Framework_TestCase
         $legalName,
         $agenciaDv
     ) {
-        $cardCreate = new BankAccountCreate(
+        $bankAccountCreate = new BankAccountCreate(
             $bankCode,
             $agencia,
             $conta,
@@ -43,8 +43,8 @@ class BankAccountCreateTest extends \PHPUnit_Framework_TestCase
             $agenciaDv
         );
 
-        $this->assertEquals(self::METHOD, $cardCreate->getMethod());
-        $this->assertEquals(self::PATH, $cardCreate->getPath());
+        $this->assertEquals(self::METHOD, $bankAccountCreate->getMethod());
+        $this->assertEquals(self::PATH, $bankAccountCreate->getPath());
         $this->assertEquals(
             [
                 'bank_code'       => $bankCode,
@@ -55,7 +55,7 @@ class BankAccountCreateTest extends \PHPUnit_Framework_TestCase
                 'legal_name'      => $legalName,
                 'agencia_dv'      => $agenciaDv
             ],
-            $cardCreate->getPayload()
+            $bankAccountCreate->getPayload()
         );
     }
 }
