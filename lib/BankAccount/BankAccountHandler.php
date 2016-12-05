@@ -7,6 +7,15 @@ use PagarMe\Sdk\BankAccount\Request\BankAccountCreate;
 
 class BankAccountHandler extends AbstractHandler
 {
+    /**
+     * @param $bankCode int
+     * @param $agencia int
+     * @param $conta int
+     * @param $contaDv int
+     * @param $documentNumber string
+     * @param $legalName string
+     * @param $agenciaDv int
+    **/
     public function create(
         $bankCode,
         $agencia,
