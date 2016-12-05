@@ -15,7 +15,7 @@ class BankAccountTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $clientMock->method('send')
-            ->willReturn(json_decode('{"object":"plan","id":70581,"amount":1337,"days":30,"name":"Plan Teste","trial_days":15,"date_created":"2016-10-31T19:06:11.258Z","payment_methods":["boleto","credit_card"],"color":"Silver","charges":13,"installments":26}'));
+            ->willReturn(json_decode('{"object": "bank_account", "id": 4840, "bank_code": "341", "agencia": "0932", "agencia_dv": "5", "conta": "58054", "conta_dv": "1", "document_type": "cpf", "document_number": "26268738888", "legal_name": "API BANK ACCOUNT", "charge_transfer_fees": false, "date_created": "2015-03-19T15:35:40.000Z"}'));
 
         $handler = new BankAccountHandler($clientMock);
 
