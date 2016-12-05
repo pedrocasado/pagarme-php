@@ -5,6 +5,7 @@ namespace PagarMe\Sdk\BankAccount;
 use PagarMe\Sdk\AbstractHandler;
 use PagarMe\Sdk\BankAccount\Request\BankAccountCreate;
 use PagarMe\Sdk\BankAccount\Request\BankAccountList;
+use PagarMe\Sdk\BankAccount\Request\BankAccountGet;
 
 class BankAccountHandler extends AbstractHandler
 {
@@ -41,6 +42,10 @@ class BankAccountHandler extends AbstractHandler
         return new BankAccount(get_object_vars($result));
     }
 
+    /**
+     * @param $page int
+     * @param $count int
+     **/
     public function getList($page = null, $count = null)
     {
         $request = new BankAccountList($page, $count);
@@ -53,5 +58,17 @@ class BankAccountHandler extends AbstractHandler
         }
 
         return $bankAccounts;
+    }
+
+    /**
+     * @param $bankAccountId int
+     **/
+    public function get($bankAccountId)
+    {
+        $request = new BankAccountGet($bankAccountId);
+
+        $result = $this->client->send($request);
+
+        return new BankAccount(get_object_vars($result));
     }
 }

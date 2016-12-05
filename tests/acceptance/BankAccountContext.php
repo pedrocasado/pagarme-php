@@ -21,6 +21,7 @@ class BankAccountContext extends BasicContext
 
     private $bankAccount;
     private $bankAccounts;
+    private $queryBankAccount;
 
     /**
      * @Given following account data :bankCode, :office, :accountNumber, :accountDigit, :document, :name and :officeDigit
@@ -179,5 +180,54 @@ class BankAccountContext extends BasicContext
             'PagarMe\Sdk\BankAccount\BankAccount',
             $this->bankAccounts
         );
+    }
+
+     /**
+     * @Given a previous created bank account
+     */
+    public function aPreviousCreatedBankAccount()
+    {
+        $this->bankAccount = self::getPagarMe()
+                ->bankAccount()
+                ->create(
+                    104,
+                    1991,
+                    10001,
+                    3,
+                    13067245890,
+                    'Cesar Silva',
+                    3
+                );
+    }
+
+    /**
+     * @When I query for created bank account
+     */
+    public function iQueryForCreatedBankAccount()
+    {
+        $this->queryBankAccount = self::getPagarMe()
+                ->bankAccount()
+                ->get(
+                    $this->bankAccount->getId()
+                );
+    }
+
+    /**
+     * @Then a bank account must be returned
+     */
+    public function aBankAccountMustBeReturned()
+    {
+        assertInstanceOf(
+            'PagarMe\Sdk\BankAccount\BankAccount',
+            $this->bankAccount
+        );
+    }
+
+     /**
+     * @Then must the same bank account
+     */
+    public function mustTheSameBankAccount()
+    {
+        assertEquals($this->bankAccount, $this->queryBankAccount);
     }
 }

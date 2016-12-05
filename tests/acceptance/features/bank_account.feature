@@ -20,3 +20,9 @@ Feature: Bank Account
     Given a previous created bank accounts
     When I query for bank accounts
     Then a list of bank account must be returned
+
+  Scenario: Get bank account
+    Given a previous created bank account
+    When I query for created bank account
+    Then a bank account must be returned
+    And must the same bank account

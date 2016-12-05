@@ -25,19 +25,19 @@ class BankAccountListTest extends \PHPUnit_Framework_TestCase
     **/
     public function mustContentBeCorrect($page, $count)
     {
-        $cardCreate = new BankAccountList(
+        $request = new BankAccountList(
             $page,
             $count
         );
 
-        $this->assertEquals(self::METHOD, $cardCreate->getMethod());
-        $this->assertEquals(self::PATH, $cardCreate->getPath());
+        $this->assertEquals(self::METHOD, $request->getMethod());
+        $this->assertEquals(self::PATH, $request->getPath());
         $this->assertEquals(
             [
                 'page'  => $page,
                 'count' => $count
             ],
-            $cardCreate->getPayload()
+            $request->getPayload()
         );
     }
 }

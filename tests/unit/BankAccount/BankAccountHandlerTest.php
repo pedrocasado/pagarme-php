@@ -6,6 +6,8 @@ use PagarMe\Sdk\BankAccount\BankAccountHandler;
 
 class BankAccountTest extends \PHPUnit_Framework_TestCase
 {
+    const BANK_ACCOUNT_ID = 4840;
+
     /**
      * @test
     **/
@@ -53,6 +55,27 @@ class BankAccountTest extends \PHPUnit_Framework_TestCase
             $bankAccounts
         );
         $this->assertEquals(3, count($bankAccounts));
+    }
+
+    /**
+     * @test
+    **/
+    public function mustObtainBankAccount()
+    {
+        $clientMock =  $this->getMockBuilder('PagarMe\Sdk\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clientMock->method('send')
+            ->willReturn(json_decode($this->getBankAccountResponse()));
+
+        $handler = new BankAccountHandler($clientMock);
+
+        $bankAccounts = $handler->get(self::BANK_ACCOUNT_ID);
+
+        $this->assertInstanceOf(
+            'Pagarme\Sdk\BankAccount\BankAccount',
+            $bankAccounts
+        );
     }
 
     private function getBankAccountResponse()
