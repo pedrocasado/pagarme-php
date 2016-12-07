@@ -30,7 +30,7 @@ class PagarMe_Exception extends Exception {
 		$joined_messages = '';
 
 		foreach($response_error['errors'] as $error) {
-			$joined_messages .= $error['message'] . "\n";
+			$joined_messages .= $error['message'] . ' (' . $error['type'].' - '.$error['parameter_name'] . ") \n";
 		}
 
 		$instance =  new self($joined_messages, $response_error);
